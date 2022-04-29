@@ -7,7 +7,7 @@ var userPassword = {
 	includeLowercase: null,
 	includeUppercase: null,
 	selectedLettercase: [],
-	includeLetters: true,
+	includeLetters: null,
 	includeNumbers: null,
 	includeSpecialCharacters: null,
 	selectedCharacters: [],
@@ -26,7 +26,9 @@ var userPassword = {
 	setIncludeLettersOption: function () {
 		userPassword.setLowercaseOption();
 		userPassword.setUppercaseOption();
-		if (this.includeLowercase == false && this.includeUppercase == false) {
+		if (this.includeLowercase == true || this.includeUppercase == true) {
+			this.includeLetters = true;
+		} else {
 			this.includeLetters = false;
 		}
 	},
@@ -36,7 +38,7 @@ var userPassword = {
 	setSpecialCharactersOption: function () {
 		this.includeSpecialCharacters = window.confirm("Would you like your password to contain special characters like '!' and '#'?");
 	},
-	collectCaseOptions: function () {
+	collectLetterCaseOptions: function () {
 		var letterCaseOptions = [];
 		if (this.includeLowercase == true) {
 			letterCaseOptions.push("lowercase");
@@ -64,19 +66,22 @@ var userPassword = {
 		userPassword.setIncludeLettersOption();
 		userPassword.setIncludeNumbersOption();
 		userPassword.setSpecialCharactersOption();
-		userPassword.collectCaseOptions();
+		userPassword.collectLetterCaseOptions();
 		userPassword.collectCharacterOptions();
-
 		var finalPassword = "";
-		for (i = 0; i < this.length; i++) {
+		for (i = 0; i < userPassword.length; i++) {
 			var characterType = Math.floor(Math.random() * this.selectedCharacters.length);
 			switch (this.selectedCharacters[characterType]) {
 				case "letters":
-					finalPassword = finalPassword + selectRandomLetter();
+					var selectedLetter = selectRandomLetter();
+					finalPassword = finalPassword + determineLetterCase(selectedLetter);
+					break;
 				case "numbers":
 					finalPassword = finalPassword + selectRandomNumber();
+					break;
 				case "specials":
 					finalPassword = finalPassword + selectRandomSpecialCharacter();
+					break;
 			}
 		}
 		console.log(finalPassword);
@@ -122,21 +127,22 @@ function selectRandomItem(listOfCharacters) {
 	return listOfCharacters.charAt(Math.floor(Math.random() * (listOfCharacters.length - 1) + 1));
 }
 
-console.log(selectRandomLetter());
-console.log(selectRandomNumber());
-console.log(selectRandomSpecialCharacter());
+function determineLetterCase(letter) {
+	if (userPassword.includeLowercase == true && userPassword.includeUppercase == true) {
+		if (Math.floor(Math.random() * 2) == 1) {
+			return letter.toUpperCase();
+		} else {
+			return letter;
+		}
+	} else if (this.includeUppercase == true) {
+		return letter.toUpperCase();
+	} else {
+		return letter;
+	}
+}
 
 var generatePassword = function () {
-	// userPassword.setPasswordLength();
-	// userPassword.setIncludeLettersOption();
-	// userPassword.setIncludeNumbersOption();
-	// userPassword.setSpecialCharactersOption();
-	// userPassword.collectCaseOptions();
-	// userPassword.collectCharacterOptions();
 	return userPassword.buildPasswordString();
-
-	// console.log(userPassword.collectCaseOptions(), userPassword.collectCharacterOptions());
-	// console.log("The password settings so far are:", userPassword);
 };
 
 // Get references to the #generate element
