@@ -6,9 +6,11 @@ var userPassword = {
 	length: null,
 	includeLowercase: null,
 	includeUppercase: null,
+	selectedLettercase: [],
 	includeLetters: true,
 	includeNumbers: null,
 	includeSpecialCharacters: null,
+	selectedCharacters: [],
 	setPasswordLength: function () {
 		var desiredLength = window.prompt("Your password must be between 8 and 168 chracters. How many long would you like your password to be?");
 		if (checkForNumbersOnly(desiredLength) && checkLength(desiredLength)) {
@@ -25,7 +27,7 @@ var userPassword = {
 		userPassword.setLowercaseOption();
 		userPassword.setUppercaseOption();
 		if (this.includeLowercase == false && this.includeUppercase == false) {
-			this.includeLetters = false
+			this.includeLetters = false;
 		}
 	},
 	setIncludeNumbersOption: function () {
@@ -42,15 +44,44 @@ var userPassword = {
 		if (this.includeUppercase == true) {
 			letterCaseOptions.push("uppercase");
 		}
-		return letterCaseOptions
+		this.selectedLettercase = letterCaseOptions;
 	},
 	collectCharacterOptions: function () {
-		var characterOptions = ["letters"];
-		if (this.includeNumbers == true) { characterOptions.push("numbers") };
-		if (this.includeSpecialCharacters == true) { characterOptions.push("specials") };
-		return characterOptions;
+		var characterOptions = [];
+		if (this.includeLetters == true) {
+			characterOptions.push("letters");
+		}
+		if (this.includeNumbers == true) {
+			characterOptions.push("numbers");
+		}
+		if (this.includeSpecialCharacters == true) {
+			characterOptions.push("specials");
+		}
+		this.selectedCharacters = characterOptions;
 	},
-	buildPasswordString : function () { coneols.log("Build password string")},
+	buildPasswordString: function () {
+		userPassword.setPasswordLength();
+		userPassword.setIncludeLettersOption();
+		userPassword.setIncludeNumbersOption();
+		userPassword.setSpecialCharactersOption();
+		userPassword.collectCaseOptions();
+		userPassword.collectCharacterOptions();
+
+		var finalPassword = "";
+		for (i = 0; i < this.length; i++) {
+			var characterType = Math.floor(Math.random() * this.selectedCharacters.length);
+			switch (this.selectedCharacters[characterType]) {
+				case "letters":
+					finalPassword = finalPassword + selectRandomLetter();
+				case "numbers":
+					finalPassword = finalPassword + selectRandomNumber();
+				case "specials":
+					finalPassword = finalPassword + selectRandomSpecialCharacter();
+			}
+		}
+		console.log(finalPassword);
+		return finalPassword;
+	},
 };
 
 function checkForNumbersOnly(desiredLength) {
@@ -64,7 +95,7 @@ function checkForNumbersOnly(desiredLength) {
 
 function checkLength(desiredLength) {
 	var desiredLengthAsAnInteger = parseInt(desiredLength);
-	if (8 < desiredLengthAsAnInteger && desiredLengthAsAnInteger < 168) {
+	if (7 < desiredLengthAsAnInteger && desiredLengthAsAnInteger < 169) {
 		return true;
 	} else {
 		window.alert("Your password must be between 8 and 168 characters in length. Please choose a number between 8 and 168.");
@@ -96,16 +127,16 @@ console.log(selectRandomNumber());
 console.log(selectRandomSpecialCharacter());
 
 var generatePassword = function () {
-	userPassword.setPasswordLength();
-	userPassword.setIncludeLettersOption();
-	userPassword.setIncludeNumbersOption();
-	userPassword.setSpecialCharactersOption();
-	userPassword.collectCaseOptions();
-	userPassword.collectCharacterOptions();
+	// userPassword.setPasswordLength();
+	// userPassword.setIncludeLettersOption();
+	// userPassword.setIncludeNumbersOption();
+	// userPassword.setSpecialCharactersOption();
+	// userPassword.collectCaseOptions();
+	// userPassword.collectCharacterOptions();
+	return userPassword.buildPasswordString();
 
-	console.log(userPassword.collectCaseOptions(), userPassword.collectCharacterOptions())
-
-	console.log("The password settings so far are:", userPassword);
+	// console.log(userPassword.collectCaseOptions(), userPassword.collectCharacterOptions());
+	// console.log("The password settings so far are:", userPassword);
 };
 
 // Get references to the #generate element
