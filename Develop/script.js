@@ -37,14 +37,35 @@ function checkForNumbersOnly(desiredLength) {
 }
 
 function checkLength(desiredLength) {
-	var entryStringConvertedToInteger = parseInt(desiredLength);
-	if (8 < entryStringConvertedToInteger && entryStringConvertedToInteger < 168) {
+	var desiredLengthAsAnInteger = parseInt(desiredLength);
+	if (8 < desiredLengthAsAnInteger && desiredLengthAsAnInteger < 168) {
 		return true;
 	} else {
 		window.alert("Your password must be between 8 and 168 characters in length. Please choose a number between 8 and 168.");
 		password.setPasswordLength();
 	}
 }
+
+function selectRandomLetter() {
+	var alphabet = "abcdefghijklmnopqrstuvwxyz";
+	var selectedLetter = alphabet.charAt(Math.floor(Math.random() * 25 + 1));
+	return selectedLetter;
+}
+
+function selectRandomNumber() {
+	var numbers = "1234567890";
+	var selectedNumber = numbers.charAt(Math.floor(Math.random() * 9 + 1));
+	return selectedNumber;
+}
+
+function selectRandomSpecialCharacter() {
+	var specialCharacters = `~!@#$%^&*()_+-={}|;':"<>?\/,.`;
+	var selectedSpecialCharacter = specialCharacters.charAt(Math.floor(Math.random() * 29 + 1))
+	return selectedSpecialCharacter;
+}
+
+console.log(selectRandomLetter());
+console.log(selectRandomNumber());
 
 var generatePassword = function () {
 	password.setPasswordLength();
