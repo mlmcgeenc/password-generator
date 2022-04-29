@@ -134,7 +134,7 @@ function determineLetterCase(letter) {
 		} else {
 			return letter;
 		}
-	} else if (this.includeUppercase == true) {
+	} else if (userPassword.includeUppercase == true) {
 		return letter.toUpperCase();
 	} else {
 		return letter;
