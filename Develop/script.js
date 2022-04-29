@@ -7,42 +7,41 @@ var password = {
 	includeUpperCase: null,
 	includeNumbers: null,
 	includeSpecialCharacters: null,
-	checkLength: function (userEntry) {
-    var entryConvertedToInteger = parseInt(userEntry);
-    console.log(typeof(entryConvertedToInteger))
-		if (8 < entryConvertedToInteger && entryConvertedToInteger < 168) {
-			console.log("This is a good length");
-			return true;
-		} else {
-			console.log("This length is out of range");
-			return false;
-		}
-	},
-	checkForNumbersOnly: function (userEntry) {
-		if (numbersOnly.test(userEntry)) {
-			console.log("This is a number");
-			return true;
-		} else {
-			console.log("This is not a number");
-      return false;
-		}
-	},
 	setPasswordLength: function () {
-		var userEntry = window.prompt("Your password must be between 8 and 168 chracters. How many long would you like your password to be?");
-		if (this.checkForNumbersOnly(userEntry) && this.checkLength(userEntry)) {
-			this.length = userEntry;
+		var desiredLength = window.prompt("Your password must be between 8 and 168 chracters. How many long would you like your password to be?");
+		if (checkForNumbersOnly(desiredLength) && checkLength(desiredLength)) {
+			this.length = desiredLength;
 		}
 	},
-	userAssignLowerCase: function () {},
-	userAssignUpperCase: function () {},
-	userAssignIncludeNumbers: function () {},
-	userAssignSpecialCharacters: function () {},
+	setLowercaseOption: function () {},
+	setUppercaseOption: function () {},
+	setIncludeNumbersOption: function () {},
+	setAssignSpecialCharactersOption: function () {},
 };
+
+function checkForNumbersOnly(desiredLength) {
+	if (numbersOnly.test(desiredLength)) {
+		return true;
+	} else {
+		window.alert("Your entry cannot contain letters, spaces, or special characters. Please enter the length of your password in numbers.")
+		password.setPasswordLength()
+	}
+}
+
+function checkLength(desiredLength) {
+	var entryStringConvertedToInteger = parseInt(desiredLength);
+	if (8 < entryStringConvertedToInteger && entryStringConvertedToInteger < 168) {
+		return true;
+	} else {
+		window.alert("Your password must be between 8 and 168 characters in length. Please choose a number between 8 and 168.")
+		password.setPasswordLength()
+	}
+}
 
 var generatePassword = function () {
 	password.setPasswordLength();
 
-  console.log("The password settings so far are:", password)
+	console.log("The password settings so far are:", password);
 };
 
 // Get references to the #generate element
