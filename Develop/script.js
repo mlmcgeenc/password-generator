@@ -3,8 +3,8 @@ var numbersOnly = /^[0-9]+$/;
 
 var password = {
 	length: null,
-	includeLowerCase: null,
-	includeUpperCase: null,
+	includeLowercase: null,
+	includeUppercase: null,
 	includeNumbers: null,
 	includeSpecialCharacters: null,
 	setPasswordLength: function () {
@@ -13,18 +13,26 @@ var password = {
 			this.length = desiredLength;
 		}
 	},
-	setLowercaseOption: function () {},
-	setUppercaseOption: function () {},
-	setIncludeNumbersOption: function () {},
-	setAssignSpecialCharactersOption: function () {},
+	setLowercaseOption: function () {
+		this.includeLowercase = window.confirm("Would you like your password to contain lowercase letters?");
+	},
+	setUppercaseOption: function () {
+		this.includeUppercase = window.confirm("Would you like your password to contain uppercase letters?");
+	},
+	setIncludeNumbersOption: function () {
+		this.includeNumbers = window.confirm("Would you like your password to contain both numbers in addition to letters?");
+	},
+	setSpecialCharactersOption: function () {
+		this.includeSpecialCharacters = window.confirm("Would you like your password to contain special characters like '!' and '#'?");
+	},
 };
 
 function checkForNumbersOnly(desiredLength) {
 	if (numbersOnly.test(desiredLength)) {
 		return true;
 	} else {
-		window.alert("Your entry cannot contain letters, spaces, or special characters. Please enter the length of your password in numbers.")
-		password.setPasswordLength()
+		window.alert("Your entry cannot contain letters, spaces, or special characters. Please enter the length of your password in numbers.");
+		password.setPasswordLength();
 	}
 }
 
@@ -33,13 +41,17 @@ function checkLength(desiredLength) {
 	if (8 < entryStringConvertedToInteger && entryStringConvertedToInteger < 168) {
 		return true;
 	} else {
-		window.alert("Your password must be between 8 and 168 characters in length. Please choose a number between 8 and 168.")
-		password.setPasswordLength()
+		window.alert("Your password must be between 8 and 168 characters in length. Please choose a number between 8 and 168.");
+		password.setPasswordLength();
 	}
 }
 
 var generatePassword = function () {
 	password.setPasswordLength();
+	password.setLowercaseOption();
+	password.setUppercaseOption();
+	password.setIncludeNumbersOption();
+	password.setSpecialCharactersOption();
 
 	console.log("The password settings so far are:", password);
 };
