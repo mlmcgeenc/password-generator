@@ -48,24 +48,26 @@ function checkLength(desiredLength) {
 
 function selectRandomLetter() {
 	var alphabet = "abcdefghijklmnopqrstuvwxyz";
-	var selectedLetter = alphabet.charAt(Math.floor(Math.random() * 25 + 1));
-	return selectedLetter;
+	return selectRandomItem(alphabet);
 }
 
 function selectRandomNumber() {
 	var numbers = "1234567890";
-	var selectedNumber = numbers.charAt(Math.floor(Math.random() * 9 + 1));
-	return selectedNumber;
+	return selectRandomItem(numbers);
 }
 
 function selectRandomSpecialCharacter() {
 	var specialCharacters = `~!@#$%^&*()_+-={}|;':"<>?\/,.`;
-	var selectedSpecialCharacter = specialCharacters.charAt(Math.floor(Math.random() * 29 + 1))
-	return selectedSpecialCharacter;
+	return selectRandomItem(specialCharacters);
+}
+
+function selectRandomItem(listOfCharacters) {
+	return listOfCharacters.charAt(Math.floor(Math.random() * (listOfCharacters.length - 1) + 1));
 }
 
 console.log(selectRandomLetter());
 console.log(selectRandomNumber());
+console.log(selectRandomSpecialCharacter());
 
 var generatePassword = function () {
 	password.setPasswordLength();
