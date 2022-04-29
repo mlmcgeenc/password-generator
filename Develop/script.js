@@ -1,10 +1,12 @@
 // Assignment code here
 var numbersOnly = /^[0-9]+$/;
 
-var password = {
+var userPassword = {
+	password: null,
 	length: null,
 	includeLowercase: null,
 	includeUppercase: null,
+	includeLetters: true,
 	includeNumbers: null,
 	includeSpecialCharacters: null,
 	setPasswordLength: function () {
@@ -19,12 +21,36 @@ var password = {
 	setUppercaseOption: function () {
 		this.includeUppercase = window.confirm("Would you like your password to contain uppercase letters?");
 	},
+	setIncludeLettersOption: function () {
+		userPassword.setLowercaseOption();
+		userPassword.setUppercaseOption();
+		if (this.includeLowercase == false && this.includeUppercase == false) {
+			this.includeLetters = false
+		}
+	},
 	setIncludeNumbersOption: function () {
-		this.includeNumbers = window.confirm("Would you like your password to contain both numbers in addition to letters?");
+		this.includeNumbers = window.confirm("Would you like your password to contain numbers?");
 	},
 	setSpecialCharactersOption: function () {
 		this.includeSpecialCharacters = window.confirm("Would you like your password to contain special characters like '!' and '#'?");
 	},
+	collectCaseOptions: function () {
+		var letterCaseOptions = [];
+		if (this.includeLowercase == true) {
+			letterCaseOptions.push("lowercase");
+		}
+		if (this.includeUppercase == true) {
+			letterCaseOptions.push("uppercase");
+		}
+		return letterCaseOptions
+	},
+	collectCharacterOptions: function () {
+		var characterOptions = ["letters"];
+		if (this.includeNumbers == true) { characterOptions.push("numbers") };
+		if (this.includeSpecialCharacters == true) { characterOptions.push("specials") };
+		return characterOptions;
+	},
+	buildPasswordString : function () { coneols.log("Build password string")},
 };
 
 function checkForNumbersOnly(desiredLength) {
@@ -32,7 +58,7 @@ function checkForNumbersOnly(desiredLength) {
 		return true;
 	} else {
 		window.alert("Your entry cannot contain letters, spaces, or special characters. Please enter the length of your password in numbers.");
-		password.setPasswordLength();
+		userPassword.setPasswordLength();
 	}
 }
 
@@ -42,7 +68,7 @@ function checkLength(desiredLength) {
 		return true;
 	} else {
 		window.alert("Your password must be between 8 and 168 characters in length. Please choose a number between 8 and 168.");
-		password.setPasswordLength();
+		userPassword.setPasswordLength();
 	}
 }
 
@@ -70,13 +96,16 @@ console.log(selectRandomNumber());
 console.log(selectRandomSpecialCharacter());
 
 var generatePassword = function () {
-	password.setPasswordLength();
-	password.setLowercaseOption();
-	password.setUppercaseOption();
-	password.setIncludeNumbersOption();
-	password.setSpecialCharactersOption();
+	userPassword.setPasswordLength();
+	userPassword.setIncludeLettersOption();
+	userPassword.setIncludeNumbersOption();
+	userPassword.setSpecialCharactersOption();
+	userPassword.collectCaseOptions();
+	userPassword.collectCharacterOptions();
 
-	console.log("The password settings so far are:", password);
+	console.log(userPassword.collectCaseOptions(), userPassword.collectCharacterOptions())
+
+	console.log("The password settings so far are:", userPassword);
 };
 
 // Get references to the #generate element
