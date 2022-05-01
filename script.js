@@ -1,20 +1,40 @@
 // Assignment code here
 var numbersOnly = /^[0-9]+$/;
+var alphabet = "abcdefghijklmnopqrstuvwxyz";
+var numbers = "1234567890";
+var specialCharacters = `~!@#$%^&*()_+-={}|;':"<>?\/,.`;
 
 var userPassword = {
 	password: null,
 	length: null,
-	includeLowercase: null,
-	includeUppercase: null,
+	includeLowercase: false,
+	includeUppercase: false,
 	selectedLettercase: [],
-	includeLetters: null,
-	includeNumbers: null,
-	includeSpecialCharacters: null,
+	includeLetters: false,
+	includeNumbers: false,
+	includeSpecialCharacters: false,
 	selectedCharacters: [],
+	checkForNumbersOnly: function (desiredLength) {
+		if (numbersOnly.test(desiredLength)) {
+			return true;
+		} else {
+			window.alert("Your entry cannot contain letters, spaces, or special characters. Please enter the length of your password in numbers.");
+			userPassword.setPasswordLength();
+		}
+	},
+	checkLength: function (desiredLength) {
+		var desiredLengthAsAnInteger = parseInt(desiredLength);
+		if (7 < desiredLengthAsAnInteger && desiredLengthAsAnInteger < 169) {
+			return true;
+		} else {
+			window.alert("Your password must be between 8 and 168 characters in length. Please choose a number between 8 and 168.");
+			userPassword.setPasswordLength();
+		}
+	},
 	setPasswordLength: function () {
 		var desiredLength = window.prompt("Your password must be between 8 and 168 chracters. How many long would you like your password to be?");
-		if (checkForNumbersOnly(desiredLength) && checkLength(desiredLength)) {
-			this.length = desiredLength;
+		if (this.checkForNumbersOnly(desiredLength) && this.checkLength(desiredLength)) {
+			this.length = parseInt(desiredLength);
 		}
 	},
 	setLowercaseOption: function () {
@@ -24,9 +44,9 @@ var userPassword = {
 		this.includeUppercase = window.confirm("Would you like your password to contain uppercase letters?");
 	},
 	setIncludeLettersOption: function () {
-		userPassword.setLowercaseOption();
-		userPassword.setUppercaseOption();
-		if (this.includeLowercase == true || this.includeUppercase == true) {
+		this.setLowercaseOption();
+		this.setUppercaseOption();
+		if (this.includeLowercase || this.includeUppercase) {
 			this.includeLetters = true;
 		} else {
 			this.includeLetters = false;
@@ -40,26 +60,39 @@ var userPassword = {
 	},
 	collectLetterCaseOptions: function () {
 		var letterCaseOptions = [];
-		if (this.includeLowercase == true) {
+		if (this.includeLowercase) {
 			letterCaseOptions.push("lowercase");
 		}
-		if (this.includeUppercase == true) {
+		if (this.includeUppercase) {
 			letterCaseOptions.push("uppercase");
 		}
 		this.selectedLettercase = letterCaseOptions;
 	},
 	collectCharacterOptions: function () {
 		var characterOptions = [];
-		if (this.includeLetters == true) {
+		if (this.includeLetters) {
 			characterOptions.push("letters");
 		}
-		if (this.includeNumbers == true) {
+		if (this.includeNumbers) {
 			characterOptions.push("numbers");
 		}
-		if (this.includeSpecialCharacters == true) {
+		if (this.includeSpecialCharacters) {
 			characterOptions.push("specials");
 		}
 		this.selectedCharacters = characterOptions;
+	},
+	determineLetterCase: function (letter) {
+		if (this.includeLowercase && this.includeUppercase) {
+			if (Math.floor(Math.random() * 2) === 1) {
+				return letter.toUpperCase();
+			} else {
+				return letter;
+			}
+		} else if (userPassword.includeUppercase) {
+			return letter.toUpperCase();
+		} else {
+			return letter;
+		}
 	},
 	buildPasswordString: function () {
 		userPassword.setPasswordLength();
@@ -74,7 +107,7 @@ var userPassword = {
 			switch (this.selectedCharacters[characterType]) {
 				case "letters":
 					var selectedLetter = selectRandomLetter();
-					finalPassword = finalPassword + determineLetterCase(selectedLetter);
+					finalPassword = finalPassword + this.determineLetterCase(selectedLetter);
 					break;
 				case "numbers":
 					finalPassword = finalPassword + selectRandomNumber();
@@ -89,56 +122,20 @@ var userPassword = {
 	},
 };
 
-function checkForNumbersOnly(desiredLength) {
-	if (numbersOnly.test(desiredLength)) {
-		return true;
-	} else {
-		window.alert("Your entry cannot contain letters, spaces, or special characters. Please enter the length of your password in numbers.");
-		userPassword.setPasswordLength();
-	}
-}
-
-function checkLength(desiredLength) {
-	var desiredLengthAsAnInteger = parseInt(desiredLength);
-	if (7 < desiredLengthAsAnInteger && desiredLengthAsAnInteger < 169) {
-		return true;
-	} else {
-		window.alert("Your password must be between 8 and 168 characters in length. Please choose a number between 8 and 168.");
-		userPassword.setPasswordLength();
-	}
-}
-
 function selectRandomLetter() {
-	var alphabet = "abcdefghijklmnopqrstuvwxyz";
 	return selectRandomItem(alphabet);
 }
 
 function selectRandomNumber() {
-	var numbers = "1234567890";
 	return selectRandomItem(numbers);
 }
 
 function selectRandomSpecialCharacter() {
-	var specialCharacters = `~!@#$%^&*()_+-={}|;':"<>?\/,.`;
 	return selectRandomItem(specialCharacters);
 }
 
 function selectRandomItem(listOfCharacters) {
 	return listOfCharacters.charAt(Math.floor(Math.random() * (listOfCharacters.length - 1) + 1));
-}
-
-function determineLetterCase(letter) {
-	if (userPassword.includeLowercase == true && userPassword.includeUppercase == true) {
-		if (Math.floor(Math.random() * 2) == 1) {
-			return letter.toUpperCase();
-		} else {
-			return letter;
-		}
-	} else if (userPassword.includeUppercase == true) {
-		return letter.toUpperCase();
-	} else {
-		return letter;
-	}
 }
 
 var generatePassword = function () {
