@@ -106,14 +106,14 @@ var userPassword = {
 			var characterType = Math.floor(Math.random() * this.selectedCharacters.length);
 			switch (this.selectedCharacters[characterType]) {
 				case "letters":
-					var selectedLetter = selectRandomLetter();
+					var selectedLetter = selectRandomItem(alphabet);
 					finalPassword = finalPassword + this.determineLetterCase(selectedLetter);
 					break;
 				case "numbers":
-					finalPassword = finalPassword + selectRandomNumber();
+					finalPassword = finalPassword + selectRandomItem(numbers);
 					break;
 				case "specials":
-					finalPassword = finalPassword + selectRandomSpecialCharacter();
+					finalPassword = finalPassword + selectRandomItem(specialCharacters);
 					break;
 			}
 		}
@@ -121,18 +121,6 @@ var userPassword = {
 		return finalPassword;
 	},
 };
-
-function selectRandomLetter() {
-	return selectRandomItem(alphabet);
-}
-
-function selectRandomNumber() {
-	return selectRandomItem(numbers);
-}
-
-function selectRandomSpecialCharacter() {
-	return selectRandomItem(specialCharacters);
-}
 
 function selectRandomItem(listOfCharacters) {
 	return listOfCharacters.charAt(Math.floor(Math.random() * (listOfCharacters.length - 1) + 1));
