@@ -102,22 +102,22 @@ var userPassword = {
 			} else {
 				return letter;
 			}
-		} else if (userPassword.includeUppercase) {
+		} else if (this.includeUppercase) {
 			return letter.toUpperCase();
 		} else {
 			return letter;
 		}
 	},
 	buildPasswordString: function () {
-		userPassword.setPasswordLength();
-		userPassword.setIncludeLettersOption();
-		userPassword.setIncludeNumbersOption();
-		userPassword.setSpecialCharactersOption();
-		userPassword.collectLetterCaseOptions();
-		userPassword.collectCharacterOptions();
+		this.setPasswordLength();
+		this.setIncludeLettersOption();
+		this.setIncludeNumbersOption();
+		this.setSpecialCharactersOption();
+		this.collectLetterCaseOptions();
+		this.collectCharacterOptions();
 		var finalPassword = "";
 		if (this.includeLetters || this.includeNumbers || this.includeSpecialCharacters) {
-			for (i = 0; i < userPassword.length; i++) {
+			for (i = 0; i < this.length; i++) {
 				var characterType = Math.floor(
 					Math.random() * this.selectedCharacters.length
 				);
