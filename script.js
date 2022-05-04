@@ -18,8 +18,10 @@ var userPassword = {
 		if (numbersOnly.test(desiredLength)) {
 			return true;
 		} else {
-			window.alert("Your entry cannot contain letters, spaces, or special characters. Please enter the length of your password in numbers.");
-			userPassword.setPasswordLength();
+			window.alert(
+				"Your entry cannot contain letters, spaces, or special characters. Please enter the length of your password in numbers."
+			);
+			this.setPasswordLength();
 		}
 	},
 	checkLength: function (desiredLength) {
@@ -27,21 +29,29 @@ var userPassword = {
 		if (7 < desiredLengthAsAnInteger && desiredLengthAsAnInteger < 169) {
 			return true;
 		} else {
-			window.alert("Your password must be between 8 and 168 characters in length. Please choose a number between 8 and 168.");
-			userPassword.setPasswordLength();
+			window.alert(
+				"Your password must be between 8 and 168 characters in length. Please choose a number between 8 and 168."
+			);
+			this.setPasswordLength();
 		}
 	},
 	setPasswordLength: function () {
-		var desiredLength = window.prompt("Your password must be between 8 and 168 chracters. How many long would you like your password to be?");
+		var desiredLength = window.prompt(
+			"Your password must be between 8 and 168 chracters. How many long would you like your password to be?"
+		);
 		if (this.checkForNumbersOnly(desiredLength) && this.checkLength(desiredLength)) {
 			this.length = parseInt(desiredLength);
 		}
 	},
 	setLowercaseOption: function () {
-		this.includeLowercase = window.confirm("Would you like your password to contain lowercase letters?");
+		this.includeLowercase = window.confirm(
+			"Would you like your password to contain lowercase letters?"
+		);
 	},
 	setUppercaseOption: function () {
-		this.includeUppercase = window.confirm("Would you like your password to contain uppercase letters?");
+		this.includeUppercase = window.confirm(
+			"Would you like your password to contain uppercase letters?"
+		);
 	},
 	setIncludeLettersOption: function () {
 		this.setLowercaseOption();
@@ -53,10 +63,14 @@ var userPassword = {
 		}
 	},
 	setIncludeNumbersOption: function () {
-		this.includeNumbers = window.confirm("Would you like your password to contain numbers?");
+		this.includeNumbers = window.confirm(
+			"Would you like your password to contain numbers?"
+		);
 	},
 	setSpecialCharactersOption: function () {
-		this.includeSpecialCharacters = window.confirm("Would you like your password to contain special characters like '!' and '#'?");
+		this.includeSpecialCharacters = window.confirm(
+			"Would you like your password to contain special characters like '!' and '#'?"
+		);
 	},
 	collectLetterCaseOptions: function () {
 		var letterCaseOptions = [];
@@ -102,28 +116,37 @@ var userPassword = {
 		userPassword.collectLetterCaseOptions();
 		userPassword.collectCharacterOptions();
 		var finalPassword = "";
-		for (i = 0; i < userPassword.length; i++) {
-			var characterType = Math.floor(Math.random() * this.selectedCharacters.length);
-			switch (this.selectedCharacters[characterType]) {
-				case "letters":
-					var selectedLetter = selectRandomItem(alphabet);
-					finalPassword = finalPassword + this.determineLetterCase(selectedLetter);
-					break;
-				case "numbers":
-					finalPassword = finalPassword + selectRandomItem(numbers);
-					break;
-				case "specials":
-					finalPassword = finalPassword + selectRandomItem(specialCharacters);
-					break;
+		if (this.includeLetters || this.includeNumbers || this.includeSpecialCharacters) {
+			for (i = 0; i < userPassword.length; i++) {
+				var characterType = Math.floor(
+					Math.random() * this.selectedCharacters.length
+				);
+				switch (this.selectedCharacters[characterType]) {
+					case "letters":
+						var selectedLetter = selectRandomItem(alphabet);
+						finalPassword =
+							finalPassword + this.determineLetterCase(selectedLetter);
+						break;
+					case "numbers":
+						finalPassword = finalPassword + selectRandomItem(numbers);
+						break;
+					case "specials":
+						finalPassword =
+							finalPassword + selectRandomItem(specialCharacters);
+						break;
+				}
 			}
+		} else {
+			window.alert("You must choose to include at least one character type.");
 		}
-		console.log(finalPassword);
 		return finalPassword;
 	},
 };
 
 function selectRandomItem(listOfCharacters) {
-	return listOfCharacters.charAt(Math.floor(Math.random() * (listOfCharacters.length - 1) + 1));
+	return listOfCharacters.charAt(
+		Math.floor(Math.random() * (listOfCharacters.length - 1) + 1)
+	);
 }
 
 var generatePassword = function () {
